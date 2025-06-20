@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.RenwuDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.renwu_name as renwuName
+        ,a.renwu_photo as renwuPhoto
+        ,a.renwu_zhiwei as renwuZhiwei
+        ,a.renwu_baocou as renwuBaocou
+        ,a.renwu_shijian as renwuShijian
+        ,a.renwu_text as renwuText
+        ,a.renwu_time as renwuTime
+        ,a.renwu_address as renwuAddress
+        ,a.renwu_fuzhenr as renwuFuzhenr
+        ,a.renwu_phone as renwuPhone
+        ,a.renwu_baoming as renwuBaoming
+        ,a.renwu_types as renwuTypes
+        ,a.jieshu_time as jieshuTime
+        ,a.zhugtai_types as zhugtaiTypes
+        ,a.renwu_content as renwuContent
+        ,a.renwu_delete as renwuDelete
+        ,a.insert_time as insertTime
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.RenwuView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        <!-- 级联表的字段 -->
+
+        FROM renwu  a
+
+        <where>
+            <if test="params.ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="params.ids" open="(" separator="," close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test=" params.renwuName != '' and params.renwuName != null and params.renwuName != 'null' ">
+                and a.renwu_name like CONCAT('%',#{params.renwuName},'%')
+            </if>
+            <if test=" params.renwuZhiwei != '' and params.renwuZhiwei != null and params.renwuZhiwei != 'null' ">
+                and a.renwu_zhiwei like CONCAT('%',#{params.renwuZhiwei},'%')
+            </if>
+            <if test="params.renwuBaocouStart != null ">
+                <![CDATA[  and a.renwu_baocou >= #{params.renwuBaocouStart}   ]]>
+            </if>
+            <if test="params.renwuBaocouEnd != null ">
+                <![CDATA[  and a.renwu_baocou <= #{params.renwuBaocouEnd}   ]]>
+            </if>
+            <if test="params.renwuBaocou != null and params.renwuBaocou != ''">
+                and a.renwu_baocou = #{params.renwuBaocou}
+            </if>
+            <if test=" params.renwuShijian != '' and params.renwuShijian != null and params.renwuShijian != 'null' ">
+                and a.renwu_shijian like CONCAT('%',#{params.renwuShijian},'%')
+            </if>
+            <if test=" params.renwuText != '' and params.renwuText != null and params.renwuText != 'null' ">
+                and a.renwu_text like CONCAT('%',#{params.renwuText},'%')
+            </if>
+            <if test=" params.renwuTimeStart != '' and params.renwuTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.renwu_time) >= UNIX_TIMESTAMP(#{params.renwuTimeStart}) ]]>
+            </if>
+            <if test=" params.renwuTimeEnd != '' and params.renwuTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.renwu_time) <= UNIX_TIMESTAMP(#{params.renwuTimeEnd}) ]]>
+            </if>
+            <if test="params.renwuTime != null and params.renwuTime != ''">
+                and a.renwu_time = #{params.renwuTime}
+            </if>
+            <if test=" params.renwuAddress != '' and params.renwuAddress != null and params.renwuAddress != 'null' ">
+                and a.renwu_address like CONCAT('%',#{params.renwuAddress},'%')
+            </if>
+            <if test=" params.renwuFuzhenr != '' and params.renwuFuzhenr != null and params.renwuFuzhenr != 'null' ">
+                and a.renwu_fuzhenr like CONCAT('%',#{params.renwuFuzhenr},'%')
+            </if>
+            <if test=" params.renwuPhone != '' and params.renwuPhone != null and params.renwuPhone != 'null' ">
+                and a.renwu_phone like CONCAT('%',#{params.renwuPhone},'%')
+            </if>
+            <if test=" params.renwuBaoming != '' and params.renwuBaoming != null and params.renwuBaoming != 'null' ">
+                and a.renwu_baoming like CONCAT('%',#{params.renwuBaoming},'%')
+            </if>
+            <if test="params.renwuTypes != null and params.renwuTypes != ''">
+                and a.renwu_types = #{params.renwuTypes}
+            </if>
+            <if test=" params.jieshuTimeStart != '' and params.jieshuTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.jieshu_time) >= UNIX_TIMESTAMP(#{params.jieshuTimeStart}) ]]>
+            </if>
+            <if test=" params.jieshuTimeEnd != '' and params.jieshuTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.jieshu_time) <= UNIX_TIMESTAMP(#{params.jieshuTimeEnd}) ]]>
+            </if>
+            <if test="params.jieshuTime != null and params.jieshuTime != ''">
+                and a.jieshu_time = #{params.jieshuTime}
+            </if>
+            <if test="params.zhugtaiTypes != null and params.zhugtaiTypes != ''">
+                and a.zhugtai_types = #{params.zhugtaiTypes}
+            </if>
+            <if test=" params.renwuContent != '' and params.renwuContent != null and params.renwuContent != 'null' ">
+                and a.renwu_content like CONCAT('%',#{params.renwuContent},'%')
+            </if>
+            <if test="params.renwuDeleteStart != null and params.renwuDeleteStart != ''">
+                <![CDATA[  and a.renwu_delete >= #{params.renwuDeleteStart}   ]]>
+            </if>
+            <if test="params.renwuDeleteEnd != null and params.renwuDeleteEnd != ''">
+                <![CDATA[  and a.renwu_delete <= #{params.renwuDeleteEnd}   ]]>
+            </if>
+             <if test="params.renwuDelete != null and params.renwuDelete != ''">
+                and a.renwu_delete = #{params.renwuDelete}
+             </if>
+            <if test=" params.insertTimeStart != '' and params.insertTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.insert_time) >= UNIX_TIMESTAMP(#{params.insertTimeStart}) ]]>
+            </if>
+            <if test=" params.insertTimeEnd != '' and params.insertTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.insert_time) <= UNIX_TIMESTAMP(#{params.insertTimeEnd}) ]]>
+            </if>
+            <if test="params.insertTime != null and params.insertTime != ''">
+                and a.insert_time = #{params.insertTime}
+            </if>
+
+        </where>
+        order by a.${params.sort} ${params.order}
+    </select>
+
+</mapper>
